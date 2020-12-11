@@ -38,6 +38,9 @@ for filename in filenames:
     else:
         continue
 
+
+
+
 df = pd.DataFrame({
     'filename': req_filenames,
     'category': categories
