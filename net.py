@@ -59,10 +59,11 @@ class Net(tf.keras.Model):
         x = self.gap(x)
         x = self.fc(x)
         return x
+    
     def model(self):
         x = tf.keras.Input(shape=(512, 512, 1))
         return tf.keras.Model(inputs=[x], outputs=self.call(x))
-
+    
 
 
 

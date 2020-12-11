@@ -7,6 +7,17 @@ from matplotlib import pyplot as plt
 import random
 from sklearn.model_selection import train_test_split
 
+'''
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
+'''
+
+
+
 PATH = '../datasets/TBX11K/TBX11K/imgs/'
 train_txt = '../datasets/TBX11K/TBX11K/lists/TBX11K_trainval.txt'
 
@@ -44,8 +55,11 @@ train_datagen = ImageDataGenerator(
     rotation_range=10,
     rescale=1.0/255.0,
     horizontal_flip=True)
-validate_datagen = ImageDataGenerator(rescale=1.0/255.0)
 
+validate_datagen = ImageDataGenerator(
+    rotation_range=10,
+    rescale=1.0/255.0,
+    horizontal_flip=True)
 
 validate_generator = validate_datagen.flow_from_dataframe(
     validate_df, 
@@ -56,7 +70,6 @@ validate_generator = validate_datagen.flow_from_dataframe(
     class_mode='categorical',
     batch_size=15
     )
-
 
 train_generator = train_datagen.flow_from_dataframe(
     train_df,
@@ -87,3 +100,36 @@ for i in range(15):
         break
 plt.tight_layout()
 plt.show()
+
+
+
+total_train = train_df.shape[0]
+total_validate = validate_df.shape[0]
+batch_size = 15
+
+
+
+model = Net(learnable=True)
+model.build(input_shape=(None, 512, 512, 1))
+model.model().summary()
+
+
+'''
+
+model = Net()
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+#print(model.model().summary())
+history = model.fit_generator(
+    train_generator,
+    epochs=7,
+    validation_data = validate_generator,
+    validation_steps=total_validate // batch_size,
+    steps_per_epoch=total_train // batch_size
+    )
+'''
+
+
+
+
+
+
