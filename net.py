@@ -63,27 +63,6 @@ class Net(tf.keras.Model):
         x = tf.keras.Input(shape=(512, 512, 1))
         return tf.keras.Model(inputs=[x], outputs=self.call(x))
 
-outputs = Net(learnable=True)
-
-
-
-'''
-model = tf.keras.Sequential(
-    [
-        inputs,
-        NetBlock(filters=16, strides=2, learnable=False),
-        NetBlock(32, learnable=False),
-        NetBlock(48, learnable=False),
-        NetBlock(64, learnable=False),
-        NetBlock(80, pooling=False, learnable=True),
-        layers.GlobalAveragePooling2D(),
-        layers.Dense(2, activation='softmax')
-    ]
-)
-'''
-#model.summary()
-outputs.build(input_shape=(None, 512, 512, 1))
-outputs.model().summary()
 
 
 
